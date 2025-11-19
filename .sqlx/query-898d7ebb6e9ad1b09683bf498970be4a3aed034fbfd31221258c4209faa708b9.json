@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "set local search_path to uksi;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "898d7ebb6e9ad1b09683bf498970be4a3aed034fbfd31221258c4209faa708b9"
+}
