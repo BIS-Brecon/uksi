@@ -10,6 +10,5 @@ CREATE TABLE IF NOT EXISTS uksi.taxon_designation_type_kind (
     changed_by char(16) NULL REFERENCES uksi.individual (
         name_key
     ) ON DELETE CASCADE,
-    changed_date timestamp NULL,
-    system_supplied_data boolean NOT NULL
+    changed_date timestamp NULL
 );

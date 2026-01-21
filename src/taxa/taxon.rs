@@ -23,7 +23,7 @@ impl FromRow<'_, PgRow> for Taxon {
             taxon_key: row.try_get("taxon_key")?,
             item_name: row.try_get("item_name")?,
             authority: row.try_get("authority")?,
-            introduced: VagueDate::from_row(row, "introduced")?,
+            introduced: VagueDate::from_row(row, Some("introduced"))?,
             language: row.try_get("language")?,
             taxon_name_type_key: row.try_get("taxon_name_type_key")?,
             abbreviation: row.try_get("abbreviation")?,
@@ -33,6 +33,102 @@ impl FromRow<'_, PgRow> for Taxon {
             changed_date: row.try_get("changed_date")?,
             system_supplied_data: row.try_get("system_supplied_data")?,
         })
+    }
+}
+
+#[cfg(feature = "update")]
+mod update {
+    use crate::{
+        taxa::Taxon,
+        update::{Table, access},
+    };
+
+    impl Table for Taxon {
+        const NUM_COLUMNS: usize = 14;
+
+        const INSERT_QUERY: &str = r#"
+            INSERT INTO uksi.taxon (
+                taxon_key,
+                item_name,
+                authority,
+                introduced_vague_date_start,
+                introduced_vague_date_end,
+                introduced_vague_date_type,
+                language,
+                taxon_name_type_key,
+                abbreviation,
+                entered_by,
+                entry_date,
+                changed_by,
+                changed_date,
+                system_supplied_data
+            )
+        "#;
+
+        const READ_QUERY: &str = r#"
+            SELECT
+                TAXON_KEY,
+                ITEM_NAME,
+                AUTHORITY,
+                INTRODUCED_VAGUE_DATE_START,
+                INTRODUCED_VAGUE_DATE_END,
+                INTRODUCED_VAGUE_DATE_TYPE,
+                LANGUAGE,
+                TAXON_NAME_TYPE_KEY,
+                ABBREVIATION,
+                ENTERED_BY,
+                ENTRY_DATE,
+                CHANGED_BY,
+                CHANGED_DATE,
+                SYSTEM_SUPPLIED_DATA
+            FROM
+                TAXON
+        "#;
+
+        fn bind_values<'a>(
+            &self,
+            mut builder: sqlx::query_builder::Separated<'_, 'a, sqlx::Postgres, &'static str>,
+        ) {
+            builder
+                .push_bind(self.taxon_key.to_string())
+                .push_bind(self.item_name.to_owned())
+                .push_bind(self.authority.to_owned())
+                .push_bind(self.introduced.as_ref().map(|date| date.start))
+                .push_bind(self.introduced.as_ref().map(|date| date.end))
+                .push_bind(self.introduced.as_ref().map(|date| date.date_type))
+                .push_bind(self.language.to_owned())
+                .push_bind(self.taxon_name_type_key.to_string())
+                .push_bind(self.abbreviation.to_owned())
+                .push_bind(self.entered_by.to_string())
+                .push_bind(self.entry_date.to_owned())
+                .push_bind(self.changed_by.as_ref().map(|key| key.to_string()))
+                .push_bind(self.changed_date.to_owned())
+                .push_bind(self.system_supplied_data);
+        }
+
+        fn from_row(row: mdbsql::mdbsql::Row) -> Result<Self, mdbsql::Error> {
+            let introduced = access::vague_date_from_row(&row, 3)?;
+
+            Ok(Self {
+                taxon_key: row.get(0)?,
+                item_name: row.get(1)?,
+                authority: row.get(2)?,
+                introduced,
+                language: row.get(6)?,
+                taxon_name_type_key: row.get(7)?,
+                abbreviation: row.get(8)?,
+                entered_by: row.get(9)?,
+                entry_date: access::datetime_from_row(&row, 10)?.ok_or(
+                    mdbsql::Error::FromSqlError(serde_plain::Error::Parse(
+                        "Empty date",
+                        format!("Expected date was empty."),
+                    )),
+                )?,
+                changed_by: row.get(11)?,
+                changed_date: access::datetime_from_row(&row, 12)?,
+                system_supplied_data: access::bool_from_row(&row, 13)?,
+            })
+        }
     }
 }
 

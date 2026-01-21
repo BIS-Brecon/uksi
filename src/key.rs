@@ -10,6 +10,7 @@ use sqlx::{
 
 /// A 16 character ID matching NBN naming conventions.
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "update", derive(serde::Deserialize))]
 pub struct NBNKey(pub(crate) FStr<16>);
 
 impl Deref for NBNKey {

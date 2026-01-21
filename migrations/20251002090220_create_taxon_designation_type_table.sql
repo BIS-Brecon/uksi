@@ -4,9 +4,7 @@ CREATE TABLE IF NOT EXISTS uksi.taxon_designation_type (
     short_name text NOT NULL,
     long_name text NOT NULL,
     description text NULL,
-    kind char(16) NOT NULL REFERENCES uksi.taxon_designation_type_kind (
-        taxon_designation_type_kind_key
-    ) ON DELETE CASCADE,
+    kind text NOT NULL,
     entered_by char(16) NOT NULL REFERENCES uksi.individual (
         name_key
     ) ON DELETE CASCADE,

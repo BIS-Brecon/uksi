@@ -1,7 +1,7 @@
 -- Add migration script here
 CREATE TABLE IF NOT EXISTS uksi.taxon_designation (
     taxon_designation_key char(16) PRIMARY KEY,
-    date_from date NOT NULL,
+    date_from date NULL,
     date_to date NULL,
     status_geographic_area text NULL,
     status_constraint text NULL,

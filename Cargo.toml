@@ -3,10 +3,19 @@ name = "uksi"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+default = ["update"]
+update = ["dep:mdbsql", "dep:serde", "dep:serde_plain", "chrono/serde", "fstr/serde"]
+
 [dependencies]
 chrono = "0.4.42"
 fstr = "0.2.14"
+futures = "0.3.31"
+mdbsql = { version = "0.1.7", optional = true }
+serde = { version = "1.0.228", optional = true, features = ["derive"] }
+serde_plain = { version = "1.0.2", optional = true }
 sqlx = { version = "0.8.6", features = ["runtime-tokio", "macros", "chrono", "postgres"] }
+thiserror = "2.0.18"
 
 [dev-dependencies]
 sqlx = { version = "0.8.6", features = ["tls-native-tls", "migrate"] }

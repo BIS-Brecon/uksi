@@ -9,6 +9,55 @@ pub struct Owner {
     home_url: Option<String>,
 }
 
+#[cfg(feature = "update")]
+mod update {
+    use crate::{Owner, update::Table};
+
+    impl Table for Owner {
+        const NUM_COLUMNS: usize = 4;
+
+        const INSERT_QUERY: &str = r#"
+            INSERT INTO
+            uksi.owner (
+                owner_key,
+                owner_name,
+                owner_shortname,
+                home_url
+            )
+        "#;
+
+        const READ_QUERY: &str = r#"
+            SELECT
+                OWNER_KEY,
+                OWNER_NAME,
+                OWNER_SHORTNAME,
+                HOME_URL
+            FROM
+                OWNER
+        "#;
+
+        fn bind_values<'a>(
+            &self,
+            mut builder: sqlx::query_builder::Separated<'_, 'a, sqlx::Postgres, &'static str>,
+        ) {
+            builder
+                .push_bind(self.owner_key.to_string())
+                .push_bind(self.owner_name.to_owned())
+                .push_bind(self.owner_shortname.to_owned())
+                .push_bind(self.home_url.to_owned());
+        }
+
+        fn from_row(row: mdbsql::mdbsql::Row) -> Result<Self, mdbsql::Error> {
+            Ok(Self {
+                owner_key: row.get(0)?,
+                owner_name: row.get(1)?,
+                owner_shortname: row.get(2)?,
+                home_url: row.get(3)?,
+            })
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use fstr::FStr;

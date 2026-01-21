@@ -20,6 +20,12 @@ pub enum VagueDateType {
     /// E.g. 23 Mar 1987 - 30 Mar 1987.
     #[sqlx(rename = "DD")]
     DayRange,
+    /// Known start Day.
+    /// E.g. 23 Mar 1987 - ????.
+    //-- Not documented in Recorder 6,
+    //-- but present in UKSI.
+    #[sqlx(rename = "D-")]
+    FromDay,
     /// Any time in given Month.
     /// E.g. Mar 1987.
     #[sqlx(rename = "O")]
@@ -62,16 +68,17 @@ pub enum VagueDateType {
 }
 
 impl VagueDate {
-    pub fn from_row(row: &PgRow, prefix: &str) -> Result<Option<Self>, sqlx::Error> {
+    pub fn from_row(row: &PgRow, prefix: Option<&str>) -> Result<Option<Self>, sqlx::Error> {
+        let prefix = prefix.map(|s| format!("{s}_")).unwrap_or("".to_string());
+
         // Try and fetch the date type and ...
-        let date_type: Option<VagueDateType> =
-            row.try_get(&*format!("{prefix}_vague_date_type"))?;
+        let date_type: Option<VagueDateType> = row.try_get(&*format!("{prefix}vague_date_type"))?;
 
         // ... if it exists, return the other columns also.
         let date = match date_type {
             Some(date_type) => Some(Self {
-                start: row.try_get(&*format!("{prefix}_vague_date_start"))?,
-                end: row.try_get(&*format!("{prefix}_vague_date_end"))?,
+                start: row.try_get(&*format!("{prefix}vague_date_start"))?,
+                end: row.try_get(&*format!("{prefix}vague_date_end"))?,
                 date_type,
             }),
             None => None,

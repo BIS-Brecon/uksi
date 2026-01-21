@@ -7,9 +7,6 @@ CREATE TABLE IF NOT EXISTS uksi.input_group_map (
     taxon_version_key char(16) NOT NULL REFERENCES uksi.taxon_version (
         taxon_version_key
     ) ON DELETE CASCADE,
-    taxon_rank char(16) NOT NULL REFERENCES uksi.taxon_rank (
-        taxon_rank_key
-    ) ON DELETE CASCADE,
     entered_by char(16) NOT NULL REFERENCES uksi.individual (
         name_key
     ) ON DELETE CASCADE,
