@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "TRUNCATE TABLE uksi.organism;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "d62cc5b78dc543f7327e25b5156ac3ed6ea78009184ec7fee6efbf37d444e065"
+}

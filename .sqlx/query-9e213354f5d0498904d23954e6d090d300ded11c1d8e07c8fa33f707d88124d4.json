@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            ALTER TABLE\n                taxon_list_item\n            ADD CONSTRAINT\n                taxon_list_item_parent_fkey\n            FOREIGN KEY (parent)\n            REFERENCES uksi.taxon_list_item (\n                taxon_list_item_key\n            ) ON DELETE CASCADE;\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "9e213354f5d0498904d23954e6d090d300ded11c1d8e07c8fa33f707d88124d4"
+}

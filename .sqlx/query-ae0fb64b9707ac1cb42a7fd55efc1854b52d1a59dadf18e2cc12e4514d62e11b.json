@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "DELETE FROM uksi.taxon_group_name;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "ae0fb64b9707ac1cb42a7fd55efc1854b52d1a59dadf18e2cc12e4514d62e11b"
+}

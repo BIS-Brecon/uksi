@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "TRUNCATE TABLE uksi.input_group_map;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "11a3a0f6764aa5a58a3b896645c7e82ab485eb3f0a142b56e7087788a1f587e0"
+}

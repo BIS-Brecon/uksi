@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            ALTER TABLE\n                taxon_list_item\n            DROP CONSTRAINT\n                taxon_list_item_preferred_name_fkey;\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "a2bb61476cac50524072c18a91c086260f13f817c485584799c7e3e284d3f844"
+}

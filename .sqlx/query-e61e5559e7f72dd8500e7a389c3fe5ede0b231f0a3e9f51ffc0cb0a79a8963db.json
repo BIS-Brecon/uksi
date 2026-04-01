@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "DELETE FROM uksi.owner;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "e61e5559e7f72dd8500e7a389c3fe5ede0b231f0a3e9f51ffc0cb0a79a8963db"
+}

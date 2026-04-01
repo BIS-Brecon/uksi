@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "DELETE FROM uksi.individual;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "885d5e36fb7d79c0c7dac9688b459332539c3eef279de9fbcdcb702d91a4cdb9"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            INSERT INTO uksi.individual(\n                name_key,\n                comment,\n                system_supplied_data\n            )\n            VALUES (\n                'NBNSYS0000000000',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000003',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000009',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000011',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000012',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000013',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000014',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000015',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000016',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000017',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000018',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000019',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NBNSYS0000000020',\n                'Individual missing from UKSI.',\n                false\n            ),\n            (\n                'NHMSYS0000000028',\n                'Individual missing from UKSI.',\n                false\n            )\n            ON CONFLICT\n                DO NOTHING;\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "f7628108f611deb608ecbe924ad78308be556f2de479795e9f1c428d9feafb57"
+}

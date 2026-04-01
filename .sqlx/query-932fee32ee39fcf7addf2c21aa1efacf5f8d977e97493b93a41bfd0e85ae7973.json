@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "TRUNCATE TABLE uksi.nameserver;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "932fee32ee39fcf7addf2c21aa1efacf5f8d977e97493b93a41bfd0e85ae7973"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            INSERT INTO uksi.owner (\n                owner_key,\n                owner_name,\n                owner_shortname\n            )\n            VALUES (\n                'NHMSYS0021120134',\n                'Owner missing from UKSI.',\n                'Missing Owner'\n            )\n            ON CONFLICT\n                DO NOTHING;\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "de4c9a2c7d01c70c7171f640707cc45c2748156ee376f81ad0b209900df994e8"
+}
