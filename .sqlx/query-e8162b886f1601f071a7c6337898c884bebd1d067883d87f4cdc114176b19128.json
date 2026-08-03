@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            ALTER TABLE\n                uksi.organism\n            DROP CONSTRAINT\n                organism_parent_key_fkey;\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "e8162b886f1601f071a7c6337898c884bebd1d067883d87f4cdc114176b19128"
+}

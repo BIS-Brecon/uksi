@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            ALTER TABLE\n                uksi.organism\n            ADD CONSTRAINT\n                organism_parent_key_fkey\n            FOREIGN KEY (parent_key)\n            REFERENCES uksi.organism (\n                organism_key\n            ) ON DELETE CASCADE;\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "36b2fd5722bfb4d4aa0cee9ebdbdd7bf61ef6d0d975ab3dace5920cd908a737a"
+}

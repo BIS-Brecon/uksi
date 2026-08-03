@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            ALTER TABLE\n                uksi.taxon_list_item\n            DROP CONSTRAINT\n                taxon_list_item_preferred_name_fkey;\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "d2186cabed086bf94c59fd9767828490a735378053c3b87598c168ae3c2c7717"
+}

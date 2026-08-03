@@ -162,7 +162,7 @@ pub async fn update(
         .execute(query!(
             r#"
             ALTER TABLE
-                organism
+                uksi.organism
             DROP CONSTRAINT
                 organism_parent_key_fkey;
     "#
@@ -175,7 +175,7 @@ pub async fn update(
         .execute(query!(
             r#"
             ALTER TABLE
-                organism
+                uksi.organism
             ADD CONSTRAINT
                 organism_parent_key_fkey
             FOREIGN KEY (parent_key)
@@ -195,7 +195,7 @@ pub async fn update(
         .execute(query!(
             r#"
             ALTER TABLE
-                taxon_list_item
+                uksi.taxon_list_item
             DROP CONSTRAINT
                 taxon_list_item_parent_fkey;
     "#
@@ -205,7 +205,7 @@ pub async fn update(
         .execute(query!(
             r#"
             ALTER TABLE
-                taxon_list_item
+                uksi.taxon_list_item
             DROP CONSTRAINT
                 taxon_list_item_preferred_name_fkey;
     "#
@@ -218,7 +218,7 @@ pub async fn update(
         .execute(query!(
             r#"
             ALTER TABLE
-                taxon_list_item
+                uksi.taxon_list_item
             ADD CONSTRAINT
                 taxon_list_item_parent_fkey
             FOREIGN KEY (parent)
@@ -232,7 +232,7 @@ pub async fn update(
         .execute(query!(
             r#"
             ALTER TABLE
-                taxon_list_item
+                uksi.taxon_list_item
             ADD CONSTRAINT
                 taxon_list_item_preferred_name_fkey
             FOREIGN KEY (preferred_name)
@@ -304,7 +304,7 @@ mod tests {
     #[sqlx::test(fixtures("../../tests/fixtures.sql"))]
     async fn test_update(_pool: PgPool) {
         // -- TODO --
-        // Genereate test db and write proper tests.
+        // Generate test db and write proper tests.
         // Last import tested on real UKSI: 2025-11-04.
         //
         // let mut transaction = pool.begin().await.unwrap();
