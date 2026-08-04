@@ -78,7 +78,7 @@ mod update {
 
         fn bind_values<'a>(
             &self,
-            mut builder: sqlx::query_builder::Separated<'_, 'a, sqlx::Postgres, &'static str>,
+            builder: &mut sqlx::query_builder::Separated<'_, 'a, sqlx::Postgres, &'static str>,
         ) {
             builder
                 .push_bind(self.taxon_list_item_key.to_string())

@@ -5,17 +5,20 @@ edition = "2024"
 
 [features]
 default = ["update"]
-update = ["dep:mdbsql", "dep:serde", "dep:serde_plain", "chrono/serde", "fstr/serde"]
+update = ["dep:mdbsql", "dep:serde", "dep:serde_plain", "dep:itertools", "chrono/serde", "fstr/serde"]
+tracing = ["dep:tracing"]
 
 [dependencies]
 chrono = "0.4.42"
 fstr = "0.2.14"
 futures = "0.3.31"
+itertools = { version = "0.15.0", optional = true }
 mdbsql = { version = "0.1.7", optional = true }
 serde = { version = "1", optional = true, features = ["derive"] }
 serde_plain = { version = "1.0.2", optional = true }
 sqlx = { version = "0.8.6", features = ["runtime-tokio", "macros", "chrono", "postgres"] }
 thiserror = "2.0.18"
+tracing = { version = "0.1.44", optional = true }
 
 [dev-dependencies]
 sqlx = { version = "0.8.6", features = ["tls-native-tls", "migrate"] }

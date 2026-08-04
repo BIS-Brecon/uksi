@@ -1,5 +1,6 @@
-use std::path::PathBuf;
+use std::{fmt::Debug, path::PathBuf};
 
+use itertools::Itertools;
 use mdbsql::Connection;
 use sqlx::{Executor, PgTransaction, QueryBuilder, query};
 
@@ -40,6 +41,9 @@ pub async fn update(
     let conn = Connection::open(path)?;
 
     // Repopulate
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating individual table");
     // Add missing entries to individuals table to fix foreign key constraints.
     // Needed as current UKSI is missing individuals that are referenced in other tables.
     insert_table::<Individual>(&conn, transaction).await?;
@@ -127,6 +131,8 @@ pub async fn update(
         ))
         .await?;
 
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating owner table");
     // Add missing entry to owner table to fix foreign key constraints.
     // Needed as current UKSI is missing Owner with key 'NHMSYS0021120134'
     // that is referenced in other tables.
@@ -150,13 +156,32 @@ pub async fn update(
         ))
         .await?;
 
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon_name_type table");
     insert_table::<TaxonNameType>(&conn, transaction).await?;
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon table");
     insert_table::<Taxon>(&conn, transaction).await?;
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon_rank table");
     insert_table::<TaxonRank>(&conn, transaction).await?;
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon_group_name table");
     insert_table::<TaxonGroupName>(&conn, transaction).await?;
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon_version table");
     insert_table::<TaxonVersion>(&conn, transaction).await?;
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating nameserver table");
     insert_table::<Nameserver>(&conn, transaction).await?;
 
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating organism table");
     // Drop foreign key constraint as organism is self-referential...
     transaction
         .execute(query!(
@@ -186,10 +211,20 @@ pub async fn update(
         ))
         .await?;
 
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon_list_type table");
     insert_table::<TaxonListType>(&conn, transaction).await?;
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon_list table");
     insert_table::<TaxonList>(&conn, transaction).await?;
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon_list_version table");
     insert_table::<TaxonListVersion>(&conn, transaction).await?;
 
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon_list_item table");
     // Drop foreign key constraints as taxon_list_item is self-referential...
     transaction
         .execute(query!(
@@ -243,10 +278,24 @@ pub async fn update(
         ))
         .await?;
 
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon_designation_type_kind table");
     insert_table::<TaxonDesignationTypeKind>(&conn, transaction).await?;
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon_designation_type table");
     insert_table::<TaxonDesignationType>(&conn, transaction).await?;
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating taxon_designation table");
     insert_table::<TaxonDesignation>(&conn, transaction).await?;
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating aggregate table");
     insert_table::<Aggregate>(&conn, transaction).await?;
+
+    #[cfg(feature = "tracing")]
+    tracing::debug!("Populating input_group_map table");
     insert_table::<InputGroupMap>(&conn, transaction).await?;
 
     Ok(())
@@ -257,42 +306,45 @@ async fn insert_table<T>(
     transaction: &mut PgTransaction<'static>,
 ) -> Result<(), UpdateError>
 where
-    T: Table,
+    T: Table + Debug,
 {
-    let buffer_size = std::cmp::min(MAX_BUFFER_SIZE, BIND_LIMIT / T::NUM_COLUMNS);
-    let mut buffer: Vec<T> = Vec::with_capacity(buffer_size);
+    let chunk_size = std::cmp::min(MAX_BUFFER_SIZE, BIND_LIMIT / T::NUM_COLUMNS);
     let rows = conn.prepare(T::READ_QUERY)?;
 
-    for row in rows {
-        let row = T::from_row(row)?;
-        buffer.push(row);
+    #[cfg(feature = "tracing")]
+    tracing::trace!("Inserting batches of {chunk_size} records.");
 
-        if buffer.len() >= buffer_size {
-            flush_buffer(&mut buffer, transaction).await?;
+    #[cfg(feature = "tracing")]
+    let mut chunk_num = 0;
+    for chunk in &rows.chunks(chunk_size) {
+        #[cfg(feature = "tracing")]
+        {
+            chunk_num += 1;
+            tracing::trace!("Inserting batch {chunk_num}.");
         }
+
+        let mut builder = QueryBuilder::new(T::INSERT_QUERY);
+        let mut first = true;
+        builder.push("VALUES ");
+
+        for row in chunk.into_iter() {
+            if first {
+                builder.push("(");
+                first = false;
+            } else {
+                builder.push(", (");
+            }
+
+            let row = T::from_row(row)?;
+            let mut separated = builder.separated(", ");
+            row.bind_values(&mut separated);
+
+            builder.push(")");
+        }
+
+        let query = builder.build();
+        transaction.execute(query).await?;
     }
-
-    flush_buffer(&mut buffer, transaction).await?;
-
-    Ok(())
-}
-
-async fn flush_buffer<T>(
-    buffer: &mut Vec<T>,
-    transaction: &mut PgTransaction<'static>,
-) -> Result<(), sqlx::Error>
-where
-    T: Table,
-{
-    let mut builder = QueryBuilder::new(T::INSERT_QUERY);
-    builder.push_values(&mut *buffer, |builder, item| {
-        item.bind_values(builder);
-    });
-
-    let query = builder.build();
-    transaction.execute(query).await?;
-
-    buffer.clear();
 
     Ok(())
 }
