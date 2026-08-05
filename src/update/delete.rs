@@ -14,16 +14,16 @@ pub(crate) async fn delete(transaction: &mut PgTransaction<'static>) -> Result<(
     query!("TRUNCATE TABLE uksi.taxon_designation;")
         .execute(&mut **transaction)
         .await?;
-    query!("DELETE FROM uksi.taxon_designation_type;")
+    query!("TRUNCATE TABLE uksi.taxon_designation_type CASCADE;")
         .execute(&mut **transaction)
         .await?;
-    query!("DELETE FROM uksi.taxon_designation_type_kind;")
+    query!("TRUNCATE TABLE uksi.taxon_designation_type_kind CASCADE;")
         .execute(&mut **transaction)
         .await?;
-    query!("DELETE FROM uksi.taxon_list_item;")
+    query!("TRUNCATE TABLE uksi.taxon_list_item CASCADE;")
         .execute(&mut **transaction)
         .await?;
-    query!("DELETE FROM uksi.taxon_list_type;")
+    query!("TRUNCATE TABLE uksi.taxon_list_type CASCADE;")
         .execute(&mut **transaction)
         .await?;
     query!("TRUNCATE TABLE uksi.organism;")
@@ -32,25 +32,25 @@ pub(crate) async fn delete(transaction: &mut PgTransaction<'static>) -> Result<(
     query!("TRUNCATE TABLE uksi.nameserver;")
         .execute(&mut **transaction)
         .await?;
-    query!("DELETE FROM uksi.taxon_version;")
+    query!("TRUNCATE TABLE uksi.taxon_version CASCADE;")
         .execute(&mut **transaction)
         .await?;
-    query!("DELETE FROM uksi.taxon_group_name;")
+    query!("TRUNCATE TABLE uksi.taxon_group_name CASCADE;")
         .execute(&mut **transaction)
         .await?;
-    query!("DELETE FROM uksi.taxon_rank;")
+    query!("TRUNCATE TABLE uksi.taxon_rank CASCADE;")
         .execute(&mut **transaction)
         .await?;
-    query!("DELETE FROM uksi.taxon;")
+    query!("TRUNCATE TABLE uksi.taxon CASCADE;")
         .execute(&mut **transaction)
         .await?;
-    query!("DELETE FROM uksi.taxon_name_type;")
+    query!("TRUNCATE TABLE uksi.taxon_name_type CASCADE;")
         .execute(&mut **transaction)
         .await?;
-    query!("DELETE FROM uksi.owner;")
+    query!("TRUNCATE TABLE uksi.owner CASCADE;")
         .execute(&mut **transaction)
         .await?;
-    query!("DELETE FROM uksi.individual;")
+    query!("TRUNCATE TABLE uksi.individual CASCADE;")
         .execute(&mut **transaction)
         .await?;
 

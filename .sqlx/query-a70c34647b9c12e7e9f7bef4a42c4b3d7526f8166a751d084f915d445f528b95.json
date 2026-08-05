@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "DELETE FROM uksi.individual;",
+  "query": "TRUNCATE TABLE uksi.owner CASCADE;",
   "describe": {
     "columns": [],
     "parameters": {
@@ -8,5 +8,5 @@
     },
     "nullable": []
   },
-  "hash": "885d5e36fb7d79c0c7dac9688b459332539c3eef279de9fbcdcb702d91a4cdb9"
+  "hash": "a70c34647b9c12e7e9f7bef4a42c4b3d7526f8166a751d084f915d445f528b95"
 }

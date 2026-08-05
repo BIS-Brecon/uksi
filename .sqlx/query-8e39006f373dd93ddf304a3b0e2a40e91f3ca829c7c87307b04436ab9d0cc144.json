@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "DELETE FROM uksi.taxon_designation_type;",
+  "query": "TRUNCATE TABLE uksi.taxon_version CASCADE;",
   "describe": {
     "columns": [],
     "parameters": {
@@ -8,5 +8,5 @@
     },
     "nullable": []
   },
-  "hash": "a7b34167c01b635caaadb71d7a80afea4cebb1d9dd902f345a0f2c8ffc6bddaf"
+  "hash": "8e39006f373dd93ddf304a3b0e2a40e91f3ca829c7c87307b04436ab9d0cc144"
 }

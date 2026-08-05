@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "TRUNCATE TABLE uksi.taxon_group_name CASCADE;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "b22a93127cb8b0ce5771f6143d4a30ef70c9fd7d8c6fd8cedaa256a2b0430d83"
+}
